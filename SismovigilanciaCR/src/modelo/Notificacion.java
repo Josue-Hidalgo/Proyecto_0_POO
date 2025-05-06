@@ -14,4 +14,12 @@ public class Notificacion {
     private ArrayList<Suscriptor> suscriptores;
     private Correo correo;
     private SMS sms;
+
+    public boolean agregarSuscriptor(String nombre, String correo, String telefono, ArrayList<Provincia> provinciasInteres) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void cargarSuscriptores(String rutaArchivoSuscriptores) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

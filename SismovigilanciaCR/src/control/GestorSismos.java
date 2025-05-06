@@ -6,6 +6,7 @@ package control;
 
 import modelo.Excel;
 import java.util.ArrayList;
+import java.util.List;
 import modelo.Sismo;
 
 /**
@@ -41,7 +42,16 @@ public class GestorSismos {
         sismos.add(sismo);
     }
     
+    public ArrayList<Sismo> getSismos() {
+        return sismos;
+    }
+
+    // Método para guardar sismos en Excel
+    public void guardarSismos() {
+        manejadorExcel.guardarSismos(sismos); // Asume que Excel tiene este método
+    }
     public void obtenerSismos() {
         manejadorExcel.obtenerSismos();
     }
+
 }

@@ -200,4 +200,8 @@ public class Excel {
         }
         return sismos;
     }
+
+    public void guardarSismos(ArrayList<Sismo> sismos) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
