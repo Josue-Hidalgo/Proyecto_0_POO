@@ -12,6 +12,7 @@ package vista;
 //import javax.mail.Session; 
 //import javax.mail.Transport;
 
+import control.ValidadorDatos;
 import modelo.Excel;
 
 /*
@@ -28,9 +29,26 @@ public class Test {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
-        Excel excel = new Excel("excelTest.xlsx");
-        excel.obtenerDatos();
-        System.out.println(excel.getDatos());
+        ValidadorDatos validador = new ValidadorDatos();
+        
+        System.out.println("Pruebas validarDatosSismo");
+        testSismo(validador);
+        
+        System.out.println("\nPruebas validarCorreo");
+        testCorreo(validador);
+        
+        System.out.println("\nPruebas validarTelefono");
+        testTelefono(validador);
+        
+        System.out.println("\nPruebas validarFecha");
+        testFecha(validador);
+        
+        System.out.println("\nPruebas validarHora");
+        testHora(validador);
+        
+//        Excel excel = new Excel("excelTest.xlsx");
+//        excel.obtenerDatos();
+//        System.out.println(excel.getDatos());
         //sendEmailWithJavaMail("****@gmail.com");
         //sendEmailWithAngusMail();
     }
@@ -109,4 +127,60 @@ public class Test {
 //        Transport.send(message);
 //        System.out.println("Message sent");
 //    }
+    
+    private static void testSismo(ValidadorDatos v) {
+        boolean resultado1 = v.validarDatosSismo(10.5, 5.5, 9.5, -84.5, "San José");
+        System.out.println("Caso valido: " + (resultado1 ? "OK" : "F en el chat"));
+        
+        boolean resultado2 = v.validarDatosSismo(-1, 5.5, 9.5, -84.5, "San José");
+        System.out.println("Profundidad negativa: " + (resultado2 ? "OK" : "F en el chat"));
+        
+        boolean resultado3 = v.validarDatosSismo(10.5, 5.5, 91, 181, "San José");
+        System.out.println("Coordenadas invalidas: " + (resultado3 ? "OK" : "F en el chat"));
+    }
+    
+    private static void testCorreo(ValidadorDatos v) {
+        System.out.println("correo@dominio.com: " + 
+            (v.validarCorreo("correo@dominio.com") ? "OK" : "F en el chat"));
+        
+        System.out.println("correodominio.com: " + 
+            (v.validarCorreo("correodominio.com") ? "OK" : "F en el chat"));
+            
+        System.out.println("correo@dominio: " + 
+            (v.validarCorreo("correo@dominio") ? "OK" : "F en el chat"));
+    }
+    
+    private static void testTelefono(ValidadorDatos v) {
+        System.out.println("+506 1234-5678: " + 
+            (v.validarTelefono("+506 1234-5678") ? "OK" : "F en el chat"));
+            
+        System.out.println("abc123: " + 
+            (v.validarTelefono("abc123") ? "OK" : "F en el chat"));
+            
+        System.out.println("22225555: " + 
+            (v.validarTelefono("22225555") ? "OK" : "F en el chat"));
+    }
+    
+    private static void testFecha(ValidadorDatos v) {
+        System.out.println("12-05-2023: " + 
+            (v.validarFecha("12-05-2023") ? "OK" : "F en el chat"));
+            
+        System.out.println("31-13-2020: " + 
+            (v.validarFecha("31-13-2020") ? "OK" : "F en el chat"));
+            
+        System.out.println("2023-05-12: " + 
+            (v.validarFecha("2023-05-12") ? "OK" : "F en el chat"));
+    }
+    
+    private static void testHora(ValidadorDatos v) {
+        System.out.println("23:59:59: " + 
+            (v.validarHora("23:59:59") ? "OK" : "F en el chat"));
+            
+        System.out.println("24:00:00: " + 
+            (v.validarHora("24:00:00") ? "OK" : "F en el chat"));
+            
+        System.out.println("12.30.45: " + 
+            (v.validarHora("12.30.45") ? "OK" : "F en el chat"));
+    }
+    
 }
