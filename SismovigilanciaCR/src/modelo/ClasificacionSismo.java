@@ -8,6 +8,6 @@ package modelo;
  *
  * @author javie
  */
-public enum EscalaMagnitud {
-    RITCHER_ML, MOMENT_MW, INDEFINIDO;
+public enum ClasificacionSismo {
+    MICRO, MENOR, LIGERO, MODERADO, FUERTE, MAYOR, GRAN, EPICO;
 }

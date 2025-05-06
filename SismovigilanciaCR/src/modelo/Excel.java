@@ -23,7 +23,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class Excel {
     private String direccionArchivo;
+    private int numeroFilas;
     private Map<String, ArrayList<Object>> datos = new TreeMap<String, ArrayList<Object>>();
+    private static final String[] indiceEstandar = {"Fecha", "Hora", "Origen", "Magnitud", "Latitud", "Longitud", "Ubicacion", "Provincia", "Maritimo"};
     
     public Excel() {
     }
@@ -38,6 +40,10 @@ public class Excel {
         this.direccionArchivo = direccionArchivo;
     }
 
+    public void setNumeroFilas(int numeroFilas) {
+        this.numeroFilas = numeroFilas;
+    }
+
     public void setDatos(Map<String, ArrayList<Object>> datos) {
         this.datos = datos;
     }
@@ -49,11 +55,15 @@ public class Excel {
         return direccionArchivo;
     }
 
+    public int getNumeroFilas() {
+        return numeroFilas;
+    }
+
     public Map<String, ArrayList<Object>> getDatos() {
         return datos;
     }
     //==========================================================================
-    
+
     /**
      * Obtiene los datos del achivo .xslx y los guarda en el atributo "dato"
      * creada en la clase
@@ -66,6 +76,7 @@ public class Excel {
             Iterator<Row> iteradorFila = hoja.iterator();
             
             while (iteradorFila.hasNext()) {
+                numeroFilas++;
                 Row fila = iteradorFila.next();
                 Iterator<Cell> iteradorCelda = fila.cellIterator();
                 ArrayList<Object> celdas = new ArrayList<Object>();
@@ -131,6 +142,24 @@ public class Excel {
     }
     
     /**
+     * Verifica si la primera de fila de celdas tienen el nombre  y el número
+     * de los atributos adecuados
+     * @return 
+     */
+    public boolean esIndiceCorrecto() {
+        obtenerDatos();
+        ArrayList<Object> celdas = datos.get("0");
+        String buffer;
+        for (int i = 0; i < 9; i++) {
+            buffer = (String)celdas.get(i);
+            if (!indiceEstandar[i].equalsIgnoreCase(buffer)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    /**
      * Obtine el dato que se encuentra en una celda del archivo .xslx que se 
      * guardo en "datos"
      * @param fila Entero que indica el número de fila de la celda
@@ -148,8 +177,27 @@ public class Excel {
         return celdas.get(columna);
     }
     
-    public void obtenerSismos() {
+    /**
+     * Obtiene todos los sismos dentro del atributo "datos"
+     * @return Array list con todos los sismos obtenidos
+     */
+    public ArrayList<Sismo> obtenerSismos() {
         obtenerDatos();
-        Sismo sismo;
+        ArrayList<Sismo> sismos = new ArrayList<Sismo>();
+        for (int i = 1; i <= numeroFilas; i++) {
+            ArrayList<Object> celdas = datos.get(Integer.toString(i));
+            Sismo sismo = new Sismo();
+            sismo.setFecha((String)celdas.get(0));
+            sismo.setHora((String)celdas.get(1));
+            sismo.setProfundidad((double)celdas.get(2));
+            sismo.setTipoOrigen(TipoOrigen.valueOf((String)celdas.get(3)));
+            sismo.setLatitud((double)celdas.get(4));
+            sismo.setLongitud((double)celdas.get(5));
+            sismo.setDescripcionUbicacion((String)celdas.get(6));
+            sismo.setProvincia(Provincia.valueOf((String)celdas.get(7)));
+            sismo.setEsMaritimo(((boolean)celdas.get(8)));
+            sismos.add(sismo);
+        }
+        return sismos;
     }
 }
