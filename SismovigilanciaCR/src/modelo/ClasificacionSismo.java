@@ -9,5 +9,5 @@ package modelo;
  * @author javie
  */
 public enum ClasificacionSismo {
-    MICRO, MENOR, LIGERO, MODERADO, FUERTE, MAYOR, GRAN, EPICO;
+    MICRO, MENOR, LIGERO, MODERADO, FUERTE, MAYOR, GRAN, EPICO, INDEFINIDO;
 }

@@ -5,6 +5,7 @@
 package modelo;
 
 import java.util.Calendar;
+import control.ValidadorDatos;
 
 /**
  *
@@ -25,12 +26,41 @@ public class Sismo {
     public Sismo() {
     }
     
+    public Sismo(String[] argumentos) {
+        this.setFecha(argumentos[0]);
+        this.setHora(argumentos[1]);
+        this.setProfundidad(argumentos[2]);
+        this.setTipoOrigen(argumentos[3]);
+        this.setMagnitud(argumentos[4]);
+        this.setLatitud(argumentos[5]);
+        this.setLongitud(argumentos[6]);
+        this.setDescripcionUbicacion(argumentos[7]);
+        this.setProvincia(argumentos[8]);
+        this.setEsMaritimo(argumentos[9]);
+    }
+    
     // Setters
     //==========================================================================
+    public void set(int indiceArgumento, String dato) {
+        switch (indiceArgumento) {
+            case 0 -> setFecha(dato);
+            case 1 -> setHora(dato);
+            case 2 -> setProfundidad(dato);
+            case 3 -> setTipoOrigen(dato);
+            case 4 -> setMagnitud(dato);
+            case 5 -> setLatitud(dato);
+            case 6 -> setLongitud(dato);
+        }
+    }
+    
     public void setFecha(String fecha) {
         this.fecha = fecha;
     }
     
+    /**
+     * Ajusta la fecha de ocurrencia del sismo.
+     * @param fecha Instancia de tipo Calendar con la información de una fecha.
+     */
     public void setFecha(Calendar fecha) {
         int dia, mes, annio;
         dia = fecha.get(Calendar.DAY_OF_MONTH);
@@ -40,38 +70,89 @@ public class Sismo {
     }
     
     public void setHora(String hora) {
-        this.fecha = hora;
+        this.hora = hora;
     }
     
+    /**
+     * Ajusta la hora de ocurrencia del sismo.
+     * @param hora Insntancia de tipo Calendar con la información de la hora.
+     */
     public void setHora(Calendar hora) {
         int horas, minutos, segundos;
         horas = hora.get(Calendar.HOUR_OF_DAY);
         minutos = hora.get(Calendar.MINUTE);
         segundos = hora.get(Calendar.SECOND);
         this.hora = Integer.toString(horas) + ':' + Integer.toString(minutos) + ':' + Integer.toString(segundos);
-        
     }
 
     public void setProfundidad(double profundidad) {
         this.profundidad = profundidad;
     }
-
+    
+    /**
+     * Ajusta la profundidad del en que ocurrió el sismo.
+     * @param profundidad Hilera con el valor, en kilómetros, de la profundidad.
+     */
+    public void setProfundidad(String profundidad) {
+        this.profundidad = (double) ValidadorDatos.stringToDouble(profundidad)[0];
+    }
+    
     public void setTipoOrigen(TipoOrigen tipoOrigen) {
         this.tipoOrigen = tipoOrigen;
+    }
+    
+    /**
+     * Ajusta el tipo de origen del sismo.
+     * @param tipoOrigen Hilera con la descripción del origen del sismo.
+     */
+    public void setTipoOrigen(String tipoOrigen) {
+        tipoOrigen = tipoOrigen.toUpperCase();
+        try {
+            this.tipoOrigen = TipoOrigen.valueOf(tipoOrigen);
+        }
+        catch (Exception e) {
+            this.tipoOrigen = TipoOrigen.INDEFINIDO;
+        }
     }
 
     public void setMagnitud(double magnitud) {
         this.magnitud = magnitud;
     }
-
+    
+    /**
+     * Ajusta la magnitud con que ocurrió el sismo.
+     * @param magnitud Hilera con el valor de la magnitud del sismo.
+     */
+    public void setMagnitud(String magnitud) {
+        this.magnitud = (double) ValidadorDatos.stringToDouble(magnitud)[0];
+    }
+    
     public void setLatitud(double latitud) {
         this.latitud = latitud;
+    }
+    
+    /**
+     * Ajusta la latitud en donde ocurrió el sismo.
+     * @param latitud Hilera con el valor de la latitud en donde ocurrió el
+     * sismo.
+     */
+    public void setLatitud(String latitud) {
+        this.latitud = (double) ValidadorDatos.stringToDouble(latitud)[0];
     }
 
     public void setLongitud(double longitud) {
         this.longitud = longitud;
     }
-
+    
+    /**
+     * Ajusta la longitud en donde ocurrió el sismo.
+     * @param longitud Hilera con el valor de la latitud en donde ocurrió el
+     * sismo.
+     */
+    public void setLongitud(String longitud) {
+        this.longitud = (double) ValidadorDatos.stringToDouble(longitud)[0];
+    }
+    
     public void setDescripcionUbicacion(String descripcionUbicacion) {
         this.descripcionUbicacion = descripcionUbicacion;
     }
@@ -79,9 +160,30 @@ public class Sismo {
     public void setProvincia(Provincia provincia) {
         this.provincia = provincia;
     }
+    
+    /**
+     * Ajusta la provincia en donde ocurrió el sismo.
+     * @param provincia Hilera con el nombre de la provincia en donde ocurrió 
+     */
+    public void setProvincia(String provincia) {
+        provincia = provincia.toUpperCase();
+        try {
+            this.provincia = Provincia.valueOf(provincia);
+        }
+        catch (Exception e) {
+            this.provincia = Provincia.SIN_ASIGNAR;
+        }
+    }
 
     public void setEsMaritimo(boolean esMaritimo) {
         this.esMaritimo = esMaritimo;
+    }
+    
+    public void setEsMaritimo(String esMaritimo) {
+        esMaritimo = esMaritimo.toUpperCase();
+        if (esMaritimo.equals("SI") || esMaritimo.equals("SÍ")) {
+            this.esMaritimo = true;
+        }
     }
     //==========================================================================
     
@@ -166,4 +268,11 @@ public class Sismo {
         }
     }
     //==========================================================================
+
+    @Override
+    public String toString() {
+        return "Sismo{" + "fecha=" + fecha + ", hora=" + hora + ", profundidad=" + profundidad + ", tipoOrigen=" + tipoOrigen + ", magnitud=" + magnitud + ", latitud=" + latitud + ", longitud=" + longitud + ", descripcionUbicacion=" + descripcionUbicacion + ", provincia=" + provincia + ", esMaritimo=" + esMaritimo + "}\n";
+    }
+    
+    
 }

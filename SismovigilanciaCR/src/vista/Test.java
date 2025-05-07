@@ -29,8 +29,9 @@ public class Test {
      */
     public static void main(String[] args) throws Exception {
         Excel excel = new Excel("excelTest.xlsx");
-        excel.obtenerDatos();
-        System.out.println(excel.getDatos());
+        System.out.println(excel.getListaSismos());
+        excel.setCelda(0, 0, "Hola");
+        excel.guardarDatos();
         //sendEmailWithJavaMail("****@gmail.com");
         //sendEmailWithAngusMail();
     }

@@ -41,7 +41,7 @@ public class GestorSismos {
         sismos.add(sismo);
     }
     
-    public void obtenerSismos() {
-        manejadorExcel.obtenerSismos();
+    public void getListaSismos() {
+        manejadorExcel.getListaSismos();
     }
 }
