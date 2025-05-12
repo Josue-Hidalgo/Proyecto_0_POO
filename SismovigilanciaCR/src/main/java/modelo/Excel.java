@@ -58,14 +58,23 @@ public class Excel {
     public ArrayList<Sismo> getSismos() {
         return sismos;
     }
+    
+    public String[][] getSismosTexto() {
+        String[][] tabla = new String[sismos.size()][columnas];
+        for (int i = 0; i < sismos.size(); i++) {
+            tabla[i] = sismos.get(i).get();
+        }
+        return tabla;
+    }
     //==========================================================================
 
     /**
      * Obtiene los datos del achivo .xslx y los guarda en el atributo "dato"
      * creada en la clase.
      */
-    public void getListaSismos() {
+    public void extraerSismosDeArchivo() {
         try {
+            // Incialización para leer el archivo .xlsx
             FileInputStream archivo = new FileInputStream(new File(direccionArchivo));
             libreta = new XSSFWorkbook(archivo);
             XSSFSheet hoja = libreta.getSheetAt(0);
@@ -75,8 +84,10 @@ public class Excel {
             Row fila;
             Cell celda;
             
+            // Iterar por las filas
             while (iteradorFila.hasNext()) {
                 fila = iteradorFila.next();
+                // Iterar por las columnas
                 for (int i = 0; i < columnas; i++) {
                     celda = fila.getCell(i);
                     if (celda != null) {
@@ -89,8 +100,10 @@ public class Excel {
                         }
                     }
                 }
+                // Agregar el sismo al ArrayList de sismos
                 sismos.add(new Sismo(argumentos));
             }
+            // Cerrar el archivo
             archivo.close();
         }
         catch (IOException e) {
@@ -98,10 +111,12 @@ public class Excel {
         }
     }
     
-    public void setCelda(int indiceFila, int indiceColumna, String dato) {
+    public void setSismo(int indiceFila, int indiceColumna, String dato) {
+        // Realizar el set en el ArrayList de sismos
         Sismo sismo = sismos.get(indiceFila);
         sismo.set(indiceColumna, dato);
         
+        // Realizar el cambio en el archivo .xlsx
         XSSFSheet hoja = libreta.getSheetAt(0);
         Row fila = hoja.getRow(indiceFila);
         Cell celda = fila.getCell(indiceColumna);
@@ -110,11 +125,16 @@ public class Excel {
             celda.setCellValue((double) par[0]);
         }
         celda.setCellValue(dato);
-        guardarDatos();
+        
+        // Guardar los cambios hechos
+        this.guardarDatos();
     }
     
-    public void agregarSismo(String[] argumentos) {
-        Sismo nuevoSismo = new Sismo(argumentos);
+    public void agregarSismo(Sismo nuevoSismo) {
+        // Obtener el areglo de atributos que tiene el nuevo sismo
+        String[] argumentos = nuevoSismo.get();
+        
+        // Escrbir el arreglo de atributos en el archivo .xlsx
         XSSFSheet hoja = libreta.getSheetAt(0);
         Row fila = hoja.createRow(sismos.size());
         Cell celda;
@@ -122,7 +142,49 @@ public class Excel {
             celda = fila.createCell(i);
             celda.setCellValue(argumentos[i]);
         }
+        
+        // Agregar el sismo en el ArrayList de sismos
         sismos.add(nuevoSismo);
+        
+        // Guardar los cambios
+        this.guardarDatos();
+    }
+    
+    public void agregarSismo(String[] argumentos) {
+        // Crear la instancia del nuevo sismo
+        Sismo nuevoSismo = new Sismo(argumentos);
+        
+        // Obtener el areglo de atributos que tiene el nuevo sismo
+        argumentos = nuevoSismo.get();
+        
+        // Escrbir el arreglo de atributos en el archivo .xlsx
+        XSSFSheet hoja = libreta.getSheetAt(0);
+        Row fila = hoja.createRow(sismos.size());
+        Cell celda;
+        for (int i = 0; i < columnas; i++) {
+            celda = fila.createCell(i);
+            celda.setCellValue(argumentos[i]);
+        }
+        
+        // Agregar el sismo en el ArrayList de sismos
+        sismos.add(nuevoSismo);
+        
+        // Guardar los cambios
+        this.guardarDatos();
+    }
+    
+    public void eliminarSismo(int indiceFila) {
+        // Remover el sismo del ArrayList en el índice indicado
+        sismos.remove(indiceFila);
+        
+        // Escrbir el arreglo de atributos en el archivo .xlsx
+        XSSFSheet hoja = libreta.getSheetAt(0);
+        Row fila = hoja.getRow(indiceFila);
+        hoja.removeRow(fila);
+        hoja.shiftRows(indiceFila + 1, sismos.size() + 1, -1);
+        
+        // Guardar los cambios
+        this.guardarDatos();
     }
     
     /**

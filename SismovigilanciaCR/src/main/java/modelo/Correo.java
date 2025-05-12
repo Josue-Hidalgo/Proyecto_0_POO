@@ -32,12 +32,9 @@ public class Correo {
         propiedades.put("mail.smtp.port", "587");
 
         // Autenticación
-        
         final String usuario = "leejavier62@gmail.com"; 
-        final String contraseña = "**** **** **** ****"; 
-
+        final String contraseña = "**** **** **** ****";
         Session sesion = Session.getInstance(propiedades,
-            
             new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
@@ -46,9 +43,7 @@ public class Correo {
                 });
 
         try {
-
             // Crear el mensaje
-
             Message mensaje = new MimeMessage(sesion);
             mensaje.setFrom(new InternetAddress(usuario));
             mensaje.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
@@ -56,7 +51,6 @@ public class Correo {
             mensaje.setText(cuerpo);
 
             // Enviar el mensaje
-
             Transport.send(mensaje);
 
             System.out.println("Correo enviado exitosamente!");

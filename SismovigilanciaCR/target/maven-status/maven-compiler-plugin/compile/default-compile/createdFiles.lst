@@ -1,6 +1,7 @@
 modelo\ClasificacionSismo.class
 vista\VisualizadorMapa.class
 control\Controlador.class
+modelo\Correo$1.class
 modelo\EscalaMagnitud.class
 modelo\Provincia.class
 modelo\Excel.class
@@ -13,9 +14,11 @@ modelo\TipoOrigen.class
 control\GestorSismos.class
 control\ValidadorDatos.class
 control\ControladorEstadisticas.class
+vista\VentanaPrincipal$2.class
 modelo\Sismo.class
-vista\Test$1.class
+vista\VentanaPrincipal$4.class
 vista\Test.class
 modelo\Correo.class
 vista\VentanaPrincipal.class
+vista\VentanaPrincipal$3.class
 modelo\Notificacion.class

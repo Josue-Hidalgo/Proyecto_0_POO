@@ -106,15 +106,25 @@ public class Sismo {
     public final void setHora(String hora) {
         Object[] par = ValidadorDatos.stringToDouble(hora);
         if ((boolean) par[1]) {
+            this.hora = "";
             double fraccionTiempo = (double) par[0];
-            int horas = (int) (fraccionTiempo * 24.0D);
+            
+            while (fraccionTiempo < 0.0D) {
+                fraccionTiempo += 1.0D;
+            }
+            
+            while (fraccionTiempo >= 1.0D) {
+                fraccionTiempo -= 1.0D;
+            }
+            
+            int horas = ((int) (fraccionTiempo * 24.0D));
             fraccionTiempo = fraccionTiempo * 24.0D - (double) horas;
             int minutos = (int) (fraccionTiempo * 60.0D);
             fraccionTiempo = fraccionTiempo * 60.0D - (double) minutos;
             int segundos = (int) (fraccionTiempo * 60.0D);
             
             if (horas < 10) {
-                this.hora = "0";
+                this.hora += '0';
             }
             this.hora += Integer.toString(horas) + ':';
             
@@ -249,6 +259,21 @@ public class Sismo {
     
     // Getters
     //==========================================================================
+    public String[] get() {
+        String[] atributos = new String[10];
+        atributos[0] = fecha;
+        atributos[1] = hora;
+        atributos[2] = Double.toString(profundidad);
+        atributos[3] = tipoOrigen.toString();
+        atributos[4] = Double.toString(magnitud);
+        atributos[5] = Double.toString(latitud);
+        atributos[6] = Double.toString(longitud);
+        atributos[7] = descripcionUbicacion;
+        atributos[8] = provincia.toString();
+        atributos[9] = esMaritimo ? "Si" : "No";
+        return atributos;
+    }
+    
     public String getFecha() {
         return fecha;
     }

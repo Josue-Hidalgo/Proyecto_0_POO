@@ -78,7 +78,7 @@ public class Suscriptor {
      * @return Booleano indicando si se logró enviar el mensaje al suscriptor
      */
     boolean notificar(Sismo sismo) {
-        return true;
+        return provinciasInteres.contains(sismo.getProvincia());
     }
     
 }

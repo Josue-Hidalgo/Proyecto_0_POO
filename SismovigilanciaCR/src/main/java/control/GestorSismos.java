@@ -13,7 +13,6 @@ import modelo.Sismo;
  * @author javie
  */
 public class GestorSismos {
-    ArrayList<Sismo> sismos = new ArrayList<Sismo>();
     Excel manejadorExcel = new Excel();
     
     public GestorSismos() {
@@ -38,10 +37,10 @@ public class GestorSismos {
      * @param sismo 
      */
     public void agregarSismo(Sismo sismo) {
-        sismos.add(sismo);
+        
     }
     
     public void getListaSismos() {
-        manejadorExcel.getListaSismos();
+        manejadorExcel.getSismos();
     }
 }

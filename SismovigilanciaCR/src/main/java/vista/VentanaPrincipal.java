@@ -4,16 +4,23 @@
  */
 package vista;
 
+import modelo.Excel;
+import modelo.TipoOrigen;
+import java.util.Date;
+import java.util.Calendar;
+import modelo.Sismo;
+
 /**
  *
  * @author javie
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
-
+    private Excel excel;
     /**
      * Creates new form VentanaPrincipal
      */
     public VentanaPrincipal() {
+        excel = new Excel("excelTest.xlsx");
         initComponents();
     }
 
@@ -26,79 +33,317 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane2 = new javax.swing.JTabbedPane();
-        jPanel3 = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
+        maritimoBGroup = new javax.swing.ButtonGroup();
+        mainPane = new javax.swing.JTabbedPane();
+        verPanel = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabla = new javax.swing.JTable();
+        refrescarButton = new javax.swing.JButton();
+        eliminarButton = new javax.swing.JButton();
+        agregarPanel = new javax.swing.JPanel();
+        fechaHoraTxt = new javax.swing.JLabel();
+        profundidadTxt = new javax.swing.JLabel();
+        origenTxt = new javax.swing.JLabel();
+        magnitudTxt = new javax.swing.JLabel();
+        latitudTxt = new javax.swing.JLabel();
+        longitudTxt = new javax.swing.JLabel();
+        ubicacionTxt = new javax.swing.JLabel();
+        provinciaTxt = new javax.swing.JLabel();
+        maritimoTxt = new javax.swing.JLabel();
+        fechaHoraSpinner = new javax.swing.JSpinner();
+        profundidadSpinner = new javax.swing.JSpinner();
+        origenCbox = new javax.swing.JComboBox<>();
+        magnitudSpinner = new javax.swing.JSpinner();
+        latitudSpinner = new javax.swing.JSpinner();
+        longitudSpinner = new javax.swing.JSpinner();
+        ubicacionPane = new javax.swing.JScrollPane();
+        ubicacionAreaTxt = new javax.swing.JTextArea();
+        provinciaCbox = new javax.swing.JComboBox<>();
+        siRButton = new javax.swing.JRadioButton();
+        noRButton = new javax.swing.JRadioButton();
+        agregarButton = new javax.swing.JButton();
+        estadisticasPanel = new javax.swing.JPanel();
+        notificarPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 852, Short.MAX_VALUE)
+        excel.extraerSismosDeArchivo();
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
+            excel.getSismosTexto(),
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10"
+            }
+        ));
+        tabla.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        tabla.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(tabla);
+
+        refrescarButton.setText("Refrescar");
+        refrescarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refrescarButtonActionPerformed(evt);
+            }
+        });
+
+        eliminarButton.setText("Eliminar");
+        eliminarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout verPanelLayout = new javax.swing.GroupLayout(verPanel);
+        verPanel.setLayout(verPanelLayout);
+        verPanelLayout.setHorizontalGroup(
+            verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 943, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, verPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(eliminarButton)
+                .addGap(18, 18, 18)
+                .addComponent(refrescarButton)
+                .addGap(270, 270, 270))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        verPanelLayout.setVerticalGroup(
+            verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(verPanelLayout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(refrescarButton)
+                    .addComponent(eliminarButton))
+                .addGap(28, 28, 28))
+        );
+
+        mainPane.addTab("Ver", verPanel);
+
+        fechaHoraTxt.setText("Fecha y hora:");
+
+        profundidadTxt.setText("Profundidad:");
+
+        origenTxt.setText("Origen:");
+
+        magnitudTxt.setText("Magnitud:");
+
+        latitudTxt.setText("Latitud:");
+
+        longitudTxt.setText("Longitud:");
+
+        ubicacionTxt.setText("Ubicación:");
+
+        provinciaTxt.setText("Provincia:");
+
+        maritimoTxt.setText("Marítimo:");
+
+        fechaHoraSpinner.setModel(new javax.swing.SpinnerDateModel());
+
+        profundidadSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, null, null, 0.1d));
+
+        origenCbox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Subducción", "Choque de placas", "Tectónico falla local", "Intra placa", "Deformación interna", "Indefinido" }));
+
+        magnitudSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, null, null, 0.1d));
+
+        latitudSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, null, null, 0.1d));
+
+        longitudSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, null, null, 0.1d));
+
+        ubicacionAreaTxt.setColumns(20);
+        ubicacionAreaTxt.setRows(5);
+        ubicacionPane.setViewportView(ubicacionAreaTxt);
+
+        provinciaCbox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "San José", "Alajuela", "Cartago", "Heredia", "Puntarenas", "Guanacaste", "Limón", "Indefinido" }));
+
+        maritimoBGroup.add(siRButton);
+        siRButton.setText("Sí");
+
+        maritimoBGroup.add(noRButton);
+        noRButton.setSelected(true);
+        noRButton.setText("No");
+
+        agregarButton.setText("Agregar");
+        agregarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout agregarPanelLayout = new javax.swing.GroupLayout(agregarPanel);
+        agregarPanel.setLayout(agregarPanelLayout);
+        agregarPanelLayout.setHorizontalGroup(
+            agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(agregarPanelLayout.createSequentialGroup()
+                .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(agregarPanelLayout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(profundidadTxt)
+                            .addComponent(fechaHoraTxt)
+                            .addComponent(origenTxt))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(origenCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(agregarPanelLayout.createSequentialGroup()
+                                .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(fechaHoraSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(profundidadSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(212, 212, 212)
+                                .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(provinciaTxt)
+                                    .addComponent(maritimoTxt))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(provinciaCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(agregarPanelLayout.createSequentialGroup()
+                                        .addComponent(siRButton)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(noRButton))))))
+                    .addGroup(agregarPanelLayout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(longitudTxt)
+                            .addComponent(latitudTxt))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(longitudSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(agregarPanelLayout.createSequentialGroup()
+                                .addComponent(latitudSpinner)
+                                .addGap(8, 8, 8))))
+                    .addGroup(agregarPanelLayout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addComponent(ubicacionTxt)
+                        .addGap(18, 18, 18)
+                        .addComponent(ubicacionPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(agregarPanelLayout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addComponent(magnitudTxt)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(magnitudSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(350, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, agregarPanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(agregarButton)
+                .addGap(279, 279, 279))
+        );
+        agregarPanelLayout.setVerticalGroup(
+            agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(agregarPanelLayout.createSequentialGroup()
+                .addGap(61, 61, 61)
+                .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fechaHoraTxt)
+                    .addComponent(fechaHoraSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(provinciaTxt)
+                    .addComponent(provinciaCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(profundidadTxt)
+                    .addComponent(profundidadSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(maritimoTxt)
+                    .addComponent(siRButton)
+                    .addComponent(noRButton))
+                .addGap(18, 18, 18)
+                .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(origenCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(origenTxt))
+                .addGap(27, 27, 27)
+                .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(magnitudTxt)
+                    .addComponent(magnitudSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(latitudTxt)
+                    .addComponent(latitudSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(longitudTxt)
+                    .addComponent(longitudSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(54, 54, 54)
+                .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ubicacionPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ubicacionTxt))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addComponent(agregarButton)
+                .addGap(19, 19, 19))
+        );
+
+        mainPane.addTab("Agregar", agregarPanel);
+
+        javax.swing.GroupLayout estadisticasPanelLayout = new javax.swing.GroupLayout(estadisticasPanel);
+        estadisticasPanel.setLayout(estadisticasPanelLayout);
+        estadisticasPanelLayout.setHorizontalGroup(
+            estadisticasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 943, Short.MAX_VALUE)
+        );
+        estadisticasPanelLayout.setVerticalGroup(
+            estadisticasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 499, Short.MAX_VALUE)
         );
 
-        jTabbedPane2.addTab("Agregar", jPanel3);
+        mainPane.addTab("Estadísticas", estadisticasPanel);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 852, Short.MAX_VALUE)
+        javax.swing.GroupLayout notificarPanelLayout = new javax.swing.GroupLayout(notificarPanel);
+        notificarPanel.setLayout(notificarPanelLayout);
+        notificarPanelLayout.setHorizontalGroup(
+            notificarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 943, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        notificarPanelLayout.setVerticalGroup(
+            notificarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 499, Short.MAX_VALUE)
         );
 
-        jTabbedPane2.addTab("Ver", jPanel1);
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 852, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 499, Short.MAX_VALUE)
-        );
-
-        jTabbedPane2.addTab("Estadísticas", jPanel5);
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 852, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 499, Short.MAX_VALUE)
-        );
-
-        jTabbedPane2.addTab("Notificar", jPanel4);
+        mainPane.addTab("Notificar", notificarPanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(mainPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2)
+            .addComponent(mainPane)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void agregarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarButtonActionPerformed
+        Sismo nuevoSismo = new Sismo();
+        Calendar fechaHora = Calendar.getInstance();
+        fechaHora.setTime((Date) fechaHoraSpinner.getValue());
+        
+        nuevoSismo.setFecha(fechaHora);
+        nuevoSismo.setHora(fechaHora);
+        nuevoSismo.setProfundidad((double) profundidadSpinner.getValue());
+        nuevoSismo.setTipoOrigen((String) origenCbox.getSelectedItem());
+        nuevoSismo.setMagnitud((double) magnitudSpinner.getValue());
+        nuevoSismo.setLatitud((double) latitudSpinner.getValue());
+        nuevoSismo.setLongitud((double) longitudSpinner.getValue());
+        nuevoSismo.setDescripcionUbicacion(ubicacionAreaTxt.getText());
+        nuevoSismo.setProvincia((String) provinciaCbox.getSelectedItem());
+        nuevoSismo.setEsMaritimo(siRButton.isSelected());
+        
+        excel.agregarSismo(nuevoSismo);
+    }//GEN-LAST:event_agregarButtonActionPerformed
+
+    private void refrescarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refrescarButtonActionPerformed
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
+        excel.getSismosTexto(), 
+        new String[] {
+            "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10"
+            }
+        ));
+    }//GEN-LAST:event_refrescarButtonActionPerformed
+
+    private void eliminarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarButtonActionPerformed
+        excel.eliminarSismo(tabla.getSelectedRow());
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
+        excel.getSismosTexto(), 
+        new String[] {
+            "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10"
+            }
+        ));
+    }//GEN-LAST:event_eliminarButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -136,10 +381,36 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JTabbedPane jTabbedPane2;
+    private javax.swing.JButton agregarButton;
+    private javax.swing.JPanel agregarPanel;
+    private javax.swing.JButton eliminarButton;
+    private javax.swing.JPanel estadisticasPanel;
+    private javax.swing.JSpinner fechaHoraSpinner;
+    private javax.swing.JLabel fechaHoraTxt;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSpinner latitudSpinner;
+    private javax.swing.JLabel latitudTxt;
+    private javax.swing.JSpinner longitudSpinner;
+    private javax.swing.JLabel longitudTxt;
+    private javax.swing.JSpinner magnitudSpinner;
+    private javax.swing.JLabel magnitudTxt;
+    private javax.swing.JTabbedPane mainPane;
+    private javax.swing.ButtonGroup maritimoBGroup;
+    private javax.swing.JLabel maritimoTxt;
+    private javax.swing.JRadioButton noRButton;
+    private javax.swing.JPanel notificarPanel;
+    private javax.swing.JComboBox<String> origenCbox;
+    private javax.swing.JLabel origenTxt;
+    private javax.swing.JSpinner profundidadSpinner;
+    private javax.swing.JLabel profundidadTxt;
+    private javax.swing.JComboBox<String> provinciaCbox;
+    private javax.swing.JLabel provinciaTxt;
+    private javax.swing.JButton refrescarButton;
+    private javax.swing.JRadioButton siRButton;
+    private javax.swing.JTable tabla;
+    private javax.swing.JTextArea ubicacionAreaTxt;
+    private javax.swing.JScrollPane ubicacionPane;
+    private javax.swing.JLabel ubicacionTxt;
+    private javax.swing.JPanel verPanel;
     // End of variables declaration//GEN-END:variables
 }
