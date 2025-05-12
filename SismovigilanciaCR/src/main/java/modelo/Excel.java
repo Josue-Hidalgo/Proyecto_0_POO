@@ -43,6 +43,10 @@ public class Excel {
     public void setLibreta(XSSFWorkbook libreta) {
         this.libreta = libreta;
     }
+    
+    public void setSismos(ArrayList<Sismo> sismos) {
+        this.sismos = sismos;
+    }
     //==========================================================================
     
     // Getters
@@ -59,10 +63,10 @@ public class Excel {
         return sismos;
     }
     
-    public String[][] getSismosTexto() {
+    public String[][] getTablaAtributos() {
         String[][] tabla = new String[sismos.size()][columnas];
         for (int i = 0; i < sismos.size(); i++) {
-            tabla[i] = sismos.get(i).get();
+            tabla[i] = sismos.get(i).getAtributos();
         }
         return tabla;
     }
@@ -125,14 +129,11 @@ public class Excel {
             celda.setCellValue((double) par[0]);
         }
         celda.setCellValue(dato);
-        
-        // Guardar los cambios hechos
-        this.guardarDatos();
     }
     
     public void agregarSismo(Sismo nuevoSismo) {
         // Obtener el areglo de atributos que tiene el nuevo sismo
-        String[] argumentos = nuevoSismo.get();
+        String[] argumentos = nuevoSismo.getAtributos();
         
         // Escrbir el arreglo de atributos en el archivo .xlsx
         XSSFSheet hoja = libreta.getSheetAt(0);
@@ -145,9 +146,6 @@ public class Excel {
         
         // Agregar el sismo en el ArrayList de sismos
         sismos.add(nuevoSismo);
-        
-        // Guardar los cambios
-        this.guardarDatos();
     }
     
     public void agregarSismo(String[] argumentos) {
@@ -155,7 +153,7 @@ public class Excel {
         Sismo nuevoSismo = new Sismo(argumentos);
         
         // Obtener el areglo de atributos que tiene el nuevo sismo
-        argumentos = nuevoSismo.get();
+        argumentos = nuevoSismo.getAtributos();
         
         // Escrbir el arreglo de atributos en el archivo .xlsx
         XSSFSheet hoja = libreta.getSheetAt(0);

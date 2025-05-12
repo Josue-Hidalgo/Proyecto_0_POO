@@ -4,10 +4,12 @@
  */
 package vista;
 
-import modelo.Excel;
-import modelo.TipoOrigen;
 import java.util.Date;
 import java.util.Calendar;
+import java.util.ArrayList;
+
+import modelo.Excel;
+import modelo.TipoOrigen;
 import modelo.Sismo;
 
 /**
@@ -15,6 +17,7 @@ import modelo.Sismo;
  * @author javie
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
+    private static final String[] tituloColumnas = {"Fecha", "Hora", "Profundidad", "Origen", "Magnitud", "Latitud", "Longitud", "Ubicacion", "Provincia", "Marítimo"};
     private Excel excel;
     /**
      * Creates new form VentanaPrincipal
@@ -38,9 +41,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         verPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
-        refrescarButton = new javax.swing.JButton();
-        eliminarButton = new javax.swing.JButton();
-        agregarPanel = new javax.swing.JPanel();
         fechaHoraTxt = new javax.swing.JLabel();
         profundidadTxt = new javax.swing.JLabel();
         origenTxt = new javax.swing.JLabel();
@@ -61,7 +61,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         provinciaCbox = new javax.swing.JComboBox<>();
         siRButton = new javax.swing.JRadioButton();
         noRButton = new javax.swing.JRadioButton();
+        eliminarButton = new javax.swing.JButton();
         agregarButton = new javax.swing.JButton();
+        cambiosButton = new javax.swing.JButton();
+        cargarButton = new javax.swing.JButton();
         estadisticasPanel = new javax.swing.JPanel();
         notificarPanel = new javax.swing.JPanel();
 
@@ -70,52 +73,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         excel.extraerSismosDeArchivo();
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             excel.getSismosTexto(),
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10"
-            }
+            tituloColumnas
         ));
         tabla.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         tabla.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tabla);
-
-        refrescarButton.setText("Refrescar");
-        refrescarButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                refrescarButtonActionPerformed(evt);
-            }
-        });
-
-        eliminarButton.setText("Eliminar");
-        eliminarButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                eliminarButtonActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout verPanelLayout = new javax.swing.GroupLayout(verPanel);
-        verPanel.setLayout(verPanelLayout);
-        verPanelLayout.setHorizontalGroup(
-            verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 943, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, verPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(eliminarButton)
-                .addGap(18, 18, 18)
-                .addComponent(refrescarButton)
-                .addGap(270, 270, 270))
-        );
-        verPanelLayout.setVerticalGroup(
-            verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(verPanelLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-                .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(refrescarButton)
-                    .addComponent(eliminarButton))
-                .addGap(28, 28, 28))
-        );
-
-        mainPane.addTab("Ver", verPanel);
 
         fechaHoraTxt.setText("Fecha y hora:");
 
@@ -143,9 +105,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         magnitudSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, null, null, 0.1d));
 
-        latitudSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, null, null, 0.1d));
+        latitudSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, -90.0d, 90.0d, 0.1d));
 
-        longitudSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, null, null, 0.1d));
+        longitudSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, 360.0d, 0.1d));
 
         ubicacionAreaTxt.setColumns(20);
         ubicacionAreaTxt.setRows(5);
@@ -160,6 +122,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         noRButton.setSelected(true);
         noRButton.setText("No");
 
+        eliminarButton.setText("Eliminar");
+        eliminarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarButtonActionPerformed(evt);
+            }
+        });
+
         agregarButton.setText("Agregar");
         agregarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -167,115 +136,134 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout agregarPanelLayout = new javax.swing.GroupLayout(agregarPanel);
-        agregarPanel.setLayout(agregarPanelLayout);
-        agregarPanelLayout.setHorizontalGroup(
-            agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(agregarPanelLayout.createSequentialGroup()
-                .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(agregarPanelLayout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(profundidadTxt)
-                            .addComponent(fechaHoraTxt)
-                            .addComponent(origenTxt))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(origenCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(agregarPanelLayout.createSequentialGroup()
-                                .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(fechaHoraSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(profundidadSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(212, 212, 212)
-                                .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(provinciaTxt)
-                                    .addComponent(maritimoTxt))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(provinciaCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(agregarPanelLayout.createSequentialGroup()
-                                        .addComponent(siRButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(noRButton))))))
-                    .addGroup(agregarPanelLayout.createSequentialGroup()
-                        .addGap(49, 49, 49)
-                        .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(longitudTxt)
-                            .addComponent(latitudTxt))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(longitudSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(agregarPanelLayout.createSequentialGroup()
-                                .addComponent(latitudSpinner)
-                                .addGap(8, 8, 8))))
-                    .addGroup(agregarPanelLayout.createSequentialGroup()
-                        .addGap(62, 62, 62)
-                        .addComponent(ubicacionTxt)
-                        .addGap(18, 18, 18)
-                        .addComponent(ubicacionPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(agregarPanelLayout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(magnitudTxt)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(magnitudSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(350, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, agregarPanelLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(agregarButton)
-                .addGap(279, 279, 279))
+        cambiosButton.setText("Realizar cambios");
+        cambiosButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cambiosButtonActionPerformed(evt);
+            }
+        });
+
+        cargarButton.setText("Cargar");
+        cargarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cargarButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout verPanelLayout = new javax.swing.GroupLayout(verPanel);
+        verPanel.setLayout(verPanelLayout);
+        verPanelLayout.setHorizontalGroup(
+            verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(verPanelLayout.createSequentialGroup()
+                .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(verPanelLayout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(verPanelLayout.createSequentialGroup()
+                                .addComponent(fechaHoraTxt)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(fechaHoraSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(verPanelLayout.createSequentialGroup()
+                                .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(origenTxt)
+                                    .addComponent(profundidadTxt)
+                                    .addComponent(magnitudTxt)
+                                    .addComponent(latitudTxt)
+                                    .addComponent(longitudTxt)
+                                    .addComponent(ubicacionTxt)
+                                    .addComponent(provinciaTxt))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(profundidadSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(origenCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(magnitudSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(latitudSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(longitudSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(ubicacionPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(provinciaCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(verPanelLayout.createSequentialGroup()
+                                .addComponent(maritimoTxt)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(siRButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(noRButton))
+                            .addGroup(verPanelLayout.createSequentialGroup()
+                                .addComponent(agregarButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(eliminarButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cargarButton))))
+                    .addGroup(verPanelLayout.createSequentialGroup()
+                        .addGap(105, 105, 105)
+                        .addComponent(cambiosButton)))
+                .addGap(53, 53, 53)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 818, Short.MAX_VALUE)
+                .addContainerGap())
         );
-        agregarPanelLayout.setVerticalGroup(
-            agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(agregarPanelLayout.createSequentialGroup()
-                .addGap(61, 61, 61)
-                .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+        verPanelLayout.setVerticalGroup(
+            verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, verPanelLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fechaHoraTxt)
-                    .addComponent(fechaHoraSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fechaHoraSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(profundidadTxt)
+                    .addComponent(profundidadSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(origenTxt)
+                    .addComponent(origenCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(magnitudTxt)
+                    .addComponent(magnitudSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(latitudTxt)
+                    .addComponent(latitudSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(longitudTxt)
+                    .addComponent(longitudSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ubicacionTxt)
+                    .addComponent(ubicacionPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(provinciaTxt)
                     .addComponent(provinciaCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(profundidadTxt)
-                    .addComponent(profundidadSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(maritimoTxt)
                     .addComponent(siRButton)
                     .addComponent(noRButton))
-                .addGap(18, 18, 18)
-                .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(origenCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(origenTxt))
-                .addGap(27, 27, 27)
-                .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(magnitudTxt)
-                    .addComponent(magnitudSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(latitudTxt)
-                    .addComponent(latitudSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(longitudTxt)
-                    .addComponent(longitudSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(54, 54, 54)
-                .addGroup(agregarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ubicacionPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ubicacionTxt))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addComponent(agregarButton)
-                .addGap(19, 19, 19))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
+                .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(agregarButton)
+                    .addComponent(eliminarButton)
+                    .addComponent(cargarButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cambiosButton)
+                .addGap(43, 43, 43))
+            .addGroup(verPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1))
         );
 
-        mainPane.addTab("Agregar", agregarPanel);
+        mainPane.addTab("Ver", verPanel);
 
         javax.swing.GroupLayout estadisticasPanelLayout = new javax.swing.GroupLayout(estadisticasPanel);
         estadisticasPanel.setLayout(estadisticasPanelLayout);
         estadisticasPanelLayout.setHorizontalGroup(
             estadisticasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 943, Short.MAX_VALUE)
+            .addGap(0, 1200, Short.MAX_VALUE)
         );
         estadisticasPanelLayout.setVerticalGroup(
             estadisticasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 499, Short.MAX_VALUE)
+            .addGap(0, 665, Short.MAX_VALUE)
         );
 
         mainPane.addTab("Estadísticas", estadisticasPanel);
@@ -284,11 +272,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         notificarPanel.setLayout(notificarPanelLayout);
         notificarPanelLayout.setHorizontalGroup(
             notificarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 943, Short.MAX_VALUE)
+            .addGap(0, 1200, Short.MAX_VALUE)
         );
         notificarPanelLayout.setVerticalGroup(
             notificarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 499, Short.MAX_VALUE)
+            .addGap(0, 665, Short.MAX_VALUE)
         );
 
         mainPane.addTab("Notificar", notificarPanel);
@@ -297,7 +285,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(mainPane)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -324,26 +312,33 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         nuevoSismo.setEsMaritimo(siRButton.isSelected());
         
         excel.agregarSismo(nuevoSismo);
+        tabla.setModel(new javax.swing.table.DefaultTableModel(excel.getTablaAtributos(), tituloColumnas));
     }//GEN-LAST:event_agregarButtonActionPerformed
-
-    private void refrescarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refrescarButtonActionPerformed
-        tabla.setModel(new javax.swing.table.DefaultTableModel(
-        excel.getSismosTexto(), 
-        new String[] {
-            "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10"
-            }
-        ));
-    }//GEN-LAST:event_refrescarButtonActionPerformed
 
     private void eliminarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarButtonActionPerformed
         excel.eliminarSismo(tabla.getSelectedRow());
-        tabla.setModel(new javax.swing.table.DefaultTableModel(
-        excel.getSismosTexto(), 
-        new String[] {
-            "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10"
-            }
-        ));
+        excel.guardarDatos();
+        tabla.setModel(new javax.swing.table.DefaultTableModel(excel.getTablaAtributos(), tituloColumnas));
     }//GEN-LAST:event_eliminarButtonActionPerformed
+
+    private void cargarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarButtonActionPerformed
+        excel.guardarDatos();
+        tabla.setModel(new javax.swing.table.DefaultTableModel(excel.getTablaAtributos(), tituloColumnas));
+    }//GEN-LAST:event_cargarButtonActionPerformed
+
+    private void cambiosButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cambiosButtonActionPerformed
+        String[][] tablaAtributos = excel.getTablaAtributos();
+        for (int i = 0; i < tabla.getRowCount(); i++) {
+            for (int j = 0; j < Excel.columnas; j++) {
+                String nuevoAtributo = (String) tabla.getValueAt(i, j);
+                if (!tablaAtributos[i][j].equals(nuevoAtributo)) {
+                    excel.setSismo(i, j, nuevoAtributo);
+                }
+            }
+        }
+        excel.guardarDatos();
+        tabla.setModel(new javax.swing.table.DefaultTableModel(excel.getTablaAtributos(), tituloColumnas));
+    }//GEN-LAST:event_cambiosButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -382,7 +377,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregarButton;
-    private javax.swing.JPanel agregarPanel;
+    private javax.swing.JButton cambiosButton;
+    private javax.swing.JButton cargarButton;
     private javax.swing.JButton eliminarButton;
     private javax.swing.JPanel estadisticasPanel;
     private javax.swing.JSpinner fechaHoraSpinner;
@@ -405,7 +401,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel profundidadTxt;
     private javax.swing.JComboBox<String> provinciaCbox;
     private javax.swing.JLabel provinciaTxt;
-    private javax.swing.JButton refrescarButton;
     private javax.swing.JRadioButton siRButton;
     private javax.swing.JTable tabla;
     private javax.swing.JTextArea ubicacionAreaTxt;

@@ -259,7 +259,7 @@ public class Sismo {
     
     // Getters
     //==========================================================================
-    public String[] get() {
+    public String[] getAtributos() {
         String[] atributos = new String[10];
         atributos[0] = fecha;
         atributos[1] = hora;
