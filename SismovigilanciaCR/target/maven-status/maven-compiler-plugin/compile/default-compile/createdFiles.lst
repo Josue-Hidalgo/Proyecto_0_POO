@@ -4,6 +4,7 @@ control\ExcelSuscriptores.class
 modelo\EscalaMagnitud.class
 modelo\Provincia.class
 control\ControladorEstadisticas$1.class
+modelo\Excel.class
 control\ControladorMapa.class
 control\ExcelSismos.class
 vista\VentanaPrincipal$1.class
@@ -23,4 +24,5 @@ vista\VisualizadorMapa.class
 vista\VisualizadorEstadisticas.class
 modelo\Suscriptor.class
 vista\VentanaPrincipal$5.class
+control\GestorSismos.class
 vista\VentanaPrincipal$3.class

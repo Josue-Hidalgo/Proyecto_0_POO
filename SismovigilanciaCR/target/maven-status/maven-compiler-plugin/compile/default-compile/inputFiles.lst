@@ -1,19 +1,21 @@
-C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\control\Controlador.java
-C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\control\ControladorEstadisticas.java
-C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\control\ControladorMapa.java
-C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\control\ExcelSismos.java
-C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\control\ExcelSuscriptores.java
-C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\control\ValidadorDatos.java
-C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\modelo\ClasificacionSismo.java
-C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\modelo\Correo.java
-C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\modelo\EscalaMagnitud.java
-C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\modelo\Notificacion.java
-C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\modelo\Provincia.java
-C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\modelo\Sismo.java
-C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\modelo\SMS.java
-C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\modelo\Suscriptor.java
-C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\modelo\TipoOrigen.java
-C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\vista\Test.java
-C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\vista\VentanaPrincipal.java
-C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\vista\VisualizadorEstadisticas.java
-C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\vista\VisualizadorMapa.java
+C:\Users\Usuario1\Documents\GitHub\Proyecto_0_POO\Proyecto_0_POO\SismovigilanciaCR\src\main\java\control\Controlador.java
+C:\Users\Usuario1\Documents\GitHub\Proyecto_0_POO\Proyecto_0_POO\SismovigilanciaCR\src\main\java\control\ControladorEstadisticas.java
+C:\Users\Usuario1\Documents\GitHub\Proyecto_0_POO\Proyecto_0_POO\SismovigilanciaCR\src\main\java\control\ControladorMapa.java
+C:\Users\Usuario1\Documents\GitHub\Proyecto_0_POO\Proyecto_0_POO\SismovigilanciaCR\src\main\java\control\ExcelSismos.java
+C:\Users\Usuario1\Documents\GitHub\Proyecto_0_POO\Proyecto_0_POO\SismovigilanciaCR\src\main\java\control\ExcelSuscriptores.java
+C:\Users\Usuario1\Documents\GitHub\Proyecto_0_POO\Proyecto_0_POO\SismovigilanciaCR\src\main\java\control\GestorSismos.java
+C:\Users\Usuario1\Documents\GitHub\Proyecto_0_POO\Proyecto_0_POO\SismovigilanciaCR\src\main\java\control\ValidadorDatos.java
+C:\Users\Usuario1\Documents\GitHub\Proyecto_0_POO\Proyecto_0_POO\SismovigilanciaCR\src\main\java\modelo\ClasificacionSismo.java
+C:\Users\Usuario1\Documents\GitHub\Proyecto_0_POO\Proyecto_0_POO\SismovigilanciaCR\src\main\java\modelo\Correo.java
+C:\Users\Usuario1\Documents\GitHub\Proyecto_0_POO\Proyecto_0_POO\SismovigilanciaCR\src\main\java\modelo\EscalaMagnitud.java
+C:\Users\Usuario1\Documents\GitHub\Proyecto_0_POO\Proyecto_0_POO\SismovigilanciaCR\src\main\java\modelo\Excel.java
+C:\Users\Usuario1\Documents\GitHub\Proyecto_0_POO\Proyecto_0_POO\SismovigilanciaCR\src\main\java\modelo\Notificacion.java
+C:\Users\Usuario1\Documents\GitHub\Proyecto_0_POO\Proyecto_0_POO\SismovigilanciaCR\src\main\java\modelo\Provincia.java
+C:\Users\Usuario1\Documents\GitHub\Proyecto_0_POO\Proyecto_0_POO\SismovigilanciaCR\src\main\java\modelo\Sismo.java
+C:\Users\Usuario1\Documents\GitHub\Proyecto_0_POO\Proyecto_0_POO\SismovigilanciaCR\src\main\java\modelo\SMS.java
+C:\Users\Usuario1\Documents\GitHub\Proyecto_0_POO\Proyecto_0_POO\SismovigilanciaCR\src\main\java\modelo\Suscriptor.java
+C:\Users\Usuario1\Documents\GitHub\Proyecto_0_POO\Proyecto_0_POO\SismovigilanciaCR\src\main\java\modelo\TipoOrigen.java
+C:\Users\Usuario1\Documents\GitHub\Proyecto_0_POO\Proyecto_0_POO\SismovigilanciaCR\src\main\java\vista\Test.java
+C:\Users\Usuario1\Documents\GitHub\Proyecto_0_POO\Proyecto_0_POO\SismovigilanciaCR\src\main\java\vista\VentanaPrincipal.java
+C:\Users\Usuario1\Documents\GitHub\Proyecto_0_POO\Proyecto_0_POO\SismovigilanciaCR\src\main\java\vista\VisualizadorEstadisticas.java
+C:\Users\Usuario1\Documents\GitHub\Proyecto_0_POO\Proyecto_0_POO\SismovigilanciaCR\src\main\java\vista\VisualizadorMapa.java
