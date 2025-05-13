@@ -394,7 +394,7 @@
         </Container>
         <Container class="javax.swing.JPanel" name="estadisticasPanel">
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="// Actualizar el ArrayList de sismos&#xa;excelSismos.extraerSismosDeArchivo();&#xa;&#xa;estadisticasPanel.add(estadisticas.crearBarrasPorProvincia(excelSismos.getSismos()));&#xa;estadisticasPanel.add(estadisticas.crearPastelPorOrigen(excelSismos.getSismos()));"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="// Actualizar el ArrayList de sismos&#xa;excelSismos.extraerSismosDeArchivo();&#xa;&#xa;//estadisticasPanel.add(estadisticas.crearBarrasPorProvincia(excelSismos.getSismos()));&#xa;//estadisticasPanel.add(estadisticas.crearPastelPorOrigen(excelSismos.getSismos()));&#xa;//estadisticasPanel.add(estadisticas.crearBarraTablaSismosMes(excelSismos.getSismos()));&#xa;estadisticasPanel.add(estadisticas.crearTablaSismoMagnitud(excelSismos.getSismos()));"/>
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
@@ -586,78 +586,36 @@
             </Component>
             <Component class="javax.swing.JRadioButton" name="sanjoseRButton">
               <Properties>
-                <Property name="model" type="javax.swing.ButtonModel" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                  <ComponentRef name="default"/>
-                </Property>
-                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                  <ComponentRef name="default"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="San Jos&#xe9;"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JRadioButton" name="alajuelaRButton">
               <Properties>
-                <Property name="model" type="javax.swing.ButtonModel" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                  <ComponentRef name="default"/>
-                </Property>
-                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                  <ComponentRef name="default"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Alajuela"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JRadioButton" name="cartagoRButton">
               <Properties>
-                <Property name="model" type="javax.swing.ButtonModel" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                  <ComponentRef name="default"/>
-                </Property>
-                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                  <ComponentRef name="default"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Cartago"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JRadioButton" name="herediaRButton">
               <Properties>
-                <Property name="model" type="javax.swing.ButtonModel" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                  <ComponentRef name="default"/>
-                </Property>
-                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                  <ComponentRef name="default"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Heredia"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JRadioButton" name="guanacasteRButton">
               <Properties>
-                <Property name="model" type="javax.swing.ButtonModel" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                  <ComponentRef name="default"/>
-                </Property>
-                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                  <ComponentRef name="default"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Guanacaste"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JRadioButton" name="puntarenasRButton">
               <Properties>
-                <Property name="model" type="javax.swing.ButtonModel" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                  <ComponentRef name="default"/>
-                </Property>
-                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                  <ComponentRef name="default"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Puntarenas"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JRadioButton" name="limonRButton">
               <Properties>
-                <Property name="model" type="javax.swing.ButtonModel" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                  <ComponentRef name="default"/>
-                </Property>
-                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                  <ComponentRef name="default"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Lim&#xf3;n"/>
               </Properties>
             </Component>

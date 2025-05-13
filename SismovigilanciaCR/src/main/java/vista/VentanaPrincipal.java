@@ -290,8 +290,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         // Actualizar el ArrayList de sismos
         excelSismos.extraerSismosDeArchivo();
 
-        estadisticasPanel.add(estadisticas.crearBarrasPorProvincia(excelSismos.getSismos()));
-        estadisticasPanel.add(estadisticas.crearPastelPorOrigen(excelSismos.getSismos()));
+        //estadisticasPanel.add(estadisticas.crearBarrasPorProvincia(excelSismos.getSismos()));
+        //estadisticasPanel.add(estadisticas.crearPastelPorOrigen(excelSismos.getSismos()));
+        //estadisticasPanel.add(estadisticas.crearBarraTablaSismosMes(excelSismos.getSismos()));
+        estadisticasPanel.add(estadisticas.crearTablaSismoMagnitud(excelSismos.getSismos()));
 
         javax.swing.GroupLayout estadisticasPanelLayout = new javax.swing.GroupLayout(estadisticasPanel);
         estadisticasPanel.setLayout(estadisticasPanelLayout);
