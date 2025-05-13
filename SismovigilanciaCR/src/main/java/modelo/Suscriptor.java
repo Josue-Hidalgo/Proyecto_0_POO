@@ -19,12 +19,28 @@ public class Suscriptor {
     public Suscriptor() {
     }
     
-    public Suscriptor(String nombre) {
-        this.nombre = nombre;
+    public Suscriptor(String[] argumentos) {
+        try {
+            this.setNombre(argumentos[0]);
+            this.setCorreo(argumentos[1]);
+            this.setTelefono(argumentos[2]);
+        }
+        catch (Exception e) {
+            
+        }
     }
     
     // Setters
     //==========================================================================
+    public void set(int indiceArgumento, String dato) {
+        switch (indiceArgumento) {
+            case 0 -> setNombre(dato);
+            case 1 -> setCorreo(dato);
+            case 2 -> setTelefono(dato);
+            //case 3 -> setProvinciasInteres(dato);
+        }
+    }
+    
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -44,6 +60,15 @@ public class Suscriptor {
     
     // Getters
     //==========================================================================
+    public String[] getAtributos() {
+        String[] atributos = new String[4];
+        atributos[0] = nombre;
+        atributos[1] = correo;
+        atributos[2] = telefono;
+        atributos[3] = "";
+        return atributos;
+    }
+    
     public String getNombre() {
         return nombre;
     }
@@ -67,7 +92,7 @@ public class Suscriptor {
      * @return Booleano indicando si se logró agregar la provincia. Es true si
      * agregó y es false si no se agregó o si ya existía un elemento igual
      */
-    boolean agregarProvinciaInteres(Provincia provincia) {
+    boolean agregarProvinciasInteres(Provincia provincia) {
         return provinciasInteres.add(provincia);
     }
     

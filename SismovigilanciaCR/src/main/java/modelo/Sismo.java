@@ -23,18 +23,6 @@ public class Sismo {
     private Provincia provincia;
     private boolean esMaritimo;
     
-    // Constantes de la clase
-    public static final int FECHA = 0;
-    public static final int HORA = 1;
-    public static final int PROFUNDIDAD = 2;
-    public static final int TIPO_ORIGEN = 3;
-    public static final int MAGNITUD = 4;
-    public static final int LATITUD = 5;
-    public static final int LONGITUD = 6;
-    public static final int UBICACION = 7;
-    public static final int PROVINCIA = 8;
-    public static final int ES_MARITIMO = 9;
-    
     public Sismo() {
     }
     
@@ -100,7 +88,7 @@ public class Sismo {
         dia = fecha.get(Calendar.DAY_OF_MONTH);
         mes = fecha.get(Calendar.MONTH) + 1;
         annio = fecha.get(Calendar.YEAR);
-        this.fecha = Integer.toString(dia) + '-' + Integer.toString(mes) + '-' + Integer.toString(annio);
+        this.fecha = Integer.toString(dia) + '/' + Integer.toString(mes) + '/' + Integer.toString(annio);
     }
     
     public final void setHora(String hora) {

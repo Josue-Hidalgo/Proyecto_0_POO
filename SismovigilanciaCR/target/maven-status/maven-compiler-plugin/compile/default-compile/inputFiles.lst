@@ -1,12 +1,12 @@
 C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\control\Controlador.java
 C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\control\ControladorEstadisticas.java
 C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\control\ControladorMapa.java
-C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\control\GestorSismos.java
+C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\control\ExcelSismos.java
+C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\control\ExcelSuscriptores.java
 C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\control\ValidadorDatos.java
 C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\modelo\ClasificacionSismo.java
 C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\modelo\Correo.java
 C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\modelo\EscalaMagnitud.java
-C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\modelo\Excel.java
 C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\modelo\Notificacion.java
 C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\modelo\Provincia.java
 C:\Users\javie\Documents\Code_Projects\NetBeansProjects\Semestre I 2025\SismovigilanciaCR\src\main\java\modelo\Sismo.java

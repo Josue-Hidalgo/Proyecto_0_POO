@@ -1,9 +1,11 @@
 control\Controlador.class
 modelo\Correo$1.class
+control\ExcelSuscriptores.class
 modelo\EscalaMagnitud.class
 modelo\Provincia.class
-modelo\Excel.class
+control\ControladorEstadisticas$1.class
 control\ControladorMapa.class
+control\ExcelSismos.class
 vista\VentanaPrincipal$1.class
 modelo\SMS.class
 modelo\TipoOrigen.class
@@ -21,5 +23,4 @@ vista\VisualizadorMapa.class
 vista\VisualizadorEstadisticas.class
 modelo\Suscriptor.class
 vista\VentanaPrincipal$5.class
-control\GestorSismos.class
 vista\VentanaPrincipal$3.class

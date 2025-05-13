@@ -6,24 +6,33 @@ package vista;
 
 import java.util.Date;
 import java.util.Calendar;
-import java.util.ArrayList;
 
-import modelo.Excel;
-import modelo.TipoOrigen;
+import control.ExcelSismos;
+import control.ExcelSuscriptores;
 import modelo.Sismo;
+
+import control.ControladorEstadisticas;
+import java.io.File;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author javie
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
-    private static final String[] tituloColumnas = {"Fecha", "Hora", "Profundidad", "Origen", "Magnitud", "Latitud", "Longitud", "Ubicacion", "Provincia", "Marítimo"};
-    private Excel excel;
+    private static final String[] argumentosSismo = {"Fecha", "Hora", "Profundidad", "Origen", "Magnitud", "Latitud", "Longitud", "Ubicacion", "Provincia", "Marítimo"};
+    private static final String[] argumentosSuscriptor = {"Nombre", "Correo", "Teléfono", "Provincias"};
+    private ExcelSismos excelSismos;
+    private ExcelSuscriptores excelSuscriptores;
+    private ControladorEstadisticas estadisticas;
     /**
      * Creates new form VentanaPrincipal
      */
     public VentanaPrincipal() {
-        excel = new Excel("excelTest.xlsx");
+        this.setTitle("Sismo Vigilancia CR");
+        excelSismos = new ExcelSismos("sismos.xlsx");
+        excelSuscriptores = new ExcelSuscriptores("suscriptores.xlsx");
+        estadisticas = new ControladorEstadisticas();
         initComponents();
     }
 
@@ -40,7 +49,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         mainPane = new javax.swing.JTabbedPane();
         verPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabla = new javax.swing.JTable();
+        tablaSismos = new javax.swing.JTable();
         fechaHoraTxt = new javax.swing.JLabel();
         profundidadTxt = new javax.swing.JLabel();
         origenTxt = new javax.swing.JLabel();
@@ -63,21 +72,41 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         noRButton = new javax.swing.JRadioButton();
         eliminarButton = new javax.swing.JButton();
         agregarButton = new javax.swing.JButton();
-        cambiosButton = new javax.swing.JButton();
         cargarButton = new javax.swing.JButton();
+        cambiosButton = new javax.swing.JButton();
         estadisticasPanel = new javax.swing.JPanel();
         notificarPanel = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaSuscriptores = new javax.swing.JTable();
+        nombreTxt = new javax.swing.JLabel();
+        correoTxt = new javax.swing.JLabel();
+        telefonoTxt = new javax.swing.JLabel();
+        nombreField = new javax.swing.JTextField();
+        correoField = new javax.swing.JTextField();
+        telefonoField = new javax.swing.JTextField();
+        agregarSuscriptorButton = new javax.swing.JButton();
+        eliminarSuscriptorButton = new javax.swing.JButton();
+        cargarSuscriptoresButton = new javax.swing.JButton();
+        cambiosSuscriptoresButton = new javax.swing.JButton();
+        sanjoseRButton = new javax.swing.JRadioButton();
+        alajuelaRButton = new javax.swing.JRadioButton();
+        cartagoRButton = new javax.swing.JRadioButton();
+        herediaRButton = new javax.swing.JRadioButton();
+        guanacasteRButton = new javax.swing.JRadioButton();
+        puntarenasRButton = new javax.swing.JRadioButton();
+        limonRButton = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        excel.extraerSismosDeArchivo();
-        tabla.setModel(new javax.swing.table.DefaultTableModel(
-            excel.getSismosTexto(),
-            tituloColumnas
+        excelSismos.extraerSismosDeArchivo();
+        tablaSismos.setModel(new javax.swing.table.DefaultTableModel(
+            excelSismos.getTablaAtributos(),
+            argumentosSismo
         ));
-        tabla.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        tabla.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(tabla);
+        tablaSismos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tablaSismos.setShowHorizontalLines(true);
+        tablaSismos.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(tablaSismos);
 
         fechaHoraTxt.setText("Fecha y hora:");
 
@@ -101,7 +130,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         profundidadSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, null, null, 0.1d));
 
-        origenCbox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Subducción", "Choque de placas", "Tectónico falla local", "Intra placa", "Deformación interna", "Indefinido" }));
+        origenCbox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SUBDUCCION", "CHOQUE_PLACAS", "TECTONICO_FALLA_LOCAL", "INTRA_PLACA", "DEFORMACION_INTERNA", "INDEFINIDO" }));
 
         magnitudSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, null, null, 0.1d));
 
@@ -113,7 +142,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         ubicacionAreaTxt.setRows(5);
         ubicacionPane.setViewportView(ubicacionAreaTxt);
 
-        provinciaCbox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "San José", "Alajuela", "Cartago", "Heredia", "Puntarenas", "Guanacaste", "Limón", "Indefinido" }));
+        provinciaCbox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SAN_JOSE", "ALAJUELA", "CARTAGO", "HEREDIA", "PUNTARENAS", "GUANACASTE", "LIMON", "INDEFINIDO" }));
 
         maritimoBGroup.add(siRButton);
         siRButton.setText("Sí");
@@ -136,17 +165,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        cambiosButton.setText("Realizar cambios");
-        cambiosButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cambiosButtonActionPerformed(evt);
-            }
-        });
-
         cargarButton.setText("Cargar");
         cargarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cargarButtonActionPerformed(evt);
+            }
+        });
+
+        cambiosButton.setText("Realizar cambios");
+        cambiosButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cambiosButtonActionPerformed(evt);
             }
         });
 
@@ -194,7 +223,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(cargarButton))))
                     .addGroup(verPanelLayout.createSequentialGroup()
-                        .addGap(105, 105, 105)
+                        .addGap(92, 92, 92)
                         .addComponent(cambiosButton)))
                 .addGap(53, 53, 53)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 818, Short.MAX_VALUE)
@@ -207,14 +236,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fechaHoraTxt)
                     .addComponent(fechaHoraSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(profundidadTxt)
-                    .addComponent(profundidadSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(origenTxt)
-                    .addComponent(origenCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(profundidadSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(profundidadTxt))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(origenCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(origenTxt))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(magnitudTxt)
@@ -231,16 +260,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ubicacionTxt)
                     .addComponent(ubicacionPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
-                .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(provinciaTxt)
-                    .addComponent(provinciaCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(verPanelLayout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(provinciaTxt))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, verPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(provinciaCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(maritimoTxt)
                     .addComponent(siRButton)
                     .addComponent(noRButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 217, Short.MAX_VALUE)
                 .addGroup(verPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(agregarButton)
                     .addComponent(eliminarButton)
@@ -255,11 +287,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         mainPane.addTab("Ver", verPanel);
 
+        // Actualizar el ArrayList de sismos
+        excelSismos.extraerSismosDeArchivo();
+
+        estadisticasPanel.add(estadisticas.crearBarrasPorProvincia(excelSismos.getSismos()));
+        estadisticasPanel.add(estadisticas.crearPastelPorOrigen(excelSismos.getSismos()));
+
         javax.swing.GroupLayout estadisticasPanelLayout = new javax.swing.GroupLayout(estadisticasPanel);
         estadisticasPanel.setLayout(estadisticasPanelLayout);
         estadisticasPanelLayout.setHorizontalGroup(
             estadisticasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1200, Short.MAX_VALUE)
+            .addGap(0, 1220, Short.MAX_VALUE)
         );
         estadisticasPanelLayout.setVerticalGroup(
             estadisticasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -268,15 +306,121 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         mainPane.addTab("Estadísticas", estadisticasPanel);
 
+        excelSuscriptores.extraerSuscriptoresDeArchivo();
+        tablaSuscriptores.setModel(new javax.swing.table.DefaultTableModel(
+            excelSuscriptores.getTablaAtributos(),
+            argumentosSuscriptor
+        ));
+        jScrollPane2.setViewportView(tablaSuscriptores);
+
+        nombreTxt.setText("Nombre:");
+
+        correoTxt.setText("Correo:");
+
+        telefonoTxt.setText("Teléfono:");
+
+        agregarSuscriptorButton.setText("Agregar");
+
+        eliminarSuscriptorButton.setText("Eliminar");
+
+        cargarSuscriptoresButton.setText("Cargar");
+
+        cambiosSuscriptoresButton.setText("Realizar cambios");
+
+        sanjoseRButton.setText("San José");
+
+        alajuelaRButton.setText("Alajuela");
+
+        cartagoRButton.setText("Cartago");
+
+        herediaRButton.setText("Heredia");
+
+        guanacasteRButton.setText("Guanacaste");
+
+        puntarenasRButton.setText("Puntarenas");
+
+        limonRButton.setText("Limón");
+
         javax.swing.GroupLayout notificarPanelLayout = new javax.swing.GroupLayout(notificarPanel);
         notificarPanel.setLayout(notificarPanelLayout);
         notificarPanelLayout.setHorizontalGroup(
             notificarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1200, Short.MAX_VALUE)
+            .addGroup(notificarPanelLayout.createSequentialGroup()
+                .addGroup(notificarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(notificarPanelLayout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(agregarSuscriptorButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(eliminarSuscriptorButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cargarSuscriptoresButton))
+                    .addGroup(notificarPanelLayout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addGroup(notificarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(telefonoTxt)
+                            .addComponent(nombreTxt)
+                            .addComponent(correoTxt))
+                        .addGap(18, 18, 18)
+                        .addGroup(notificarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(sanjoseRButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(notificarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(nombreField, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                .addComponent(correoField)
+                                .addComponent(telefonoField))
+                            .addComponent(alajuelaRButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cartagoRButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(herediaRButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(guanacasteRButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(puntarenasRButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(limonRButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(notificarPanelLayout.createSequentialGroup()
+                        .addGap(91, 91, 91)
+                        .addComponent(cambiosSuscriptoresButton)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 845, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         notificarPanelLayout.setVerticalGroup(
             notificarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 665, Short.MAX_VALUE)
+            .addGroup(notificarPanelLayout.createSequentialGroup()
+                .addGap(83, 83, 83)
+                .addGroup(notificarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nombreTxt)
+                    .addComponent(nombreField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(notificarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(correoTxt)
+                    .addComponent(correoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(notificarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(telefonoTxt)
+                    .addComponent(telefonoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addComponent(sanjoseRButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(alajuelaRButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cartagoRButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(herediaRButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(guanacasteRButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(puntarenasRButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(limonRButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 168, Short.MAX_VALUE)
+                .addGroup(notificarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(agregarSuscriptorButton)
+                    .addComponent(eliminarSuscriptorButton)
+                    .addComponent(cargarSuscriptoresButton))
+                .addGap(18, 18, 18)
+                .addComponent(cambiosSuscriptoresButton)
+                .addGap(48, 48, 48))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, notificarPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2)
+                .addContainerGap())
         );
 
         mainPane.addTab("Notificar", notificarPanel);
@@ -297,6 +441,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void agregarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarButtonActionPerformed
         Sismo nuevoSismo = new Sismo();
+        
+        // Crear una instancia Calendar para poder trabajar con la instancia
+        // de tipo Date
         Calendar fechaHora = Calendar.getInstance();
         fechaHora.setTime((Date) fechaHoraSpinner.getValue());
         
@@ -311,33 +458,34 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         nuevoSismo.setProvincia((String) provinciaCbox.getSelectedItem());
         nuevoSismo.setEsMaritimo(siRButton.isSelected());
         
-        excel.agregarSismo(nuevoSismo);
-        tabla.setModel(new javax.swing.table.DefaultTableModel(excel.getTablaAtributos(), tituloColumnas));
+        excelSismos.agregarSismo(nuevoSismo);
+        excelSismos.guardarDatos();
+        tablaSismos.setModel(new javax.swing.table.DefaultTableModel(excelSismos.getTablaAtributos(), argumentosSismo));
     }//GEN-LAST:event_agregarButtonActionPerformed
 
     private void eliminarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarButtonActionPerformed
-        excel.eliminarSismo(tabla.getSelectedRow());
-        excel.guardarDatos();
-        tabla.setModel(new javax.swing.table.DefaultTableModel(excel.getTablaAtributos(), tituloColumnas));
+        excelSismos.eliminarSismo(tablaSismos.getSelectedRow());
+        excelSismos.guardarDatos();
+        tablaSismos.setModel(new javax.swing.table.DefaultTableModel(excelSismos.getTablaAtributos(), argumentosSismo));
     }//GEN-LAST:event_eliminarButtonActionPerformed
 
     private void cargarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarButtonActionPerformed
-        excel.guardarDatos();
-        tabla.setModel(new javax.swing.table.DefaultTableModel(excel.getTablaAtributos(), tituloColumnas));
+        excelSismos.guardarDatos();
+        tablaSismos.setModel(new javax.swing.table.DefaultTableModel(excelSismos.getTablaAtributos(), argumentosSismo));
     }//GEN-LAST:event_cargarButtonActionPerformed
 
     private void cambiosButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cambiosButtonActionPerformed
-        String[][] tablaAtributos = excel.getTablaAtributos();
-        for (int i = 0; i < tabla.getRowCount(); i++) {
-            for (int j = 0; j < Excel.columnas; j++) {
-                String nuevoAtributo = (String) tabla.getValueAt(i, j);
+        String[][] tablaAtributos = excelSismos.getTablaAtributos();
+        for (int i = 0; i < tablaSismos.getRowCount(); i++) {
+            for (int j = 0; j < ExcelSismos.columnas; j++) {
+                String nuevoAtributo = (String) tablaSismos.getValueAt(i, j);
                 if (!tablaAtributos[i][j].equals(nuevoAtributo)) {
-                    excel.setSismo(i, j, nuevoAtributo);
+                    excelSismos.modificarSismo(i, j, nuevoAtributo);
                 }
             }
         }
-        excel.guardarDatos();
-        tabla.setModel(new javax.swing.table.DefaultTableModel(excel.getTablaAtributos(), tituloColumnas));
+        excelSismos.guardarDatos();
+        tablaSismos.setModel(new javax.swing.table.DefaultTableModel(excelSismos.getTablaAtributos(), argumentosSismo));
     }//GEN-LAST:event_cambiosButtonActionPerformed
 
     /**
@@ -377,15 +525,27 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregarButton;
+    private javax.swing.JButton agregarSuscriptorButton;
+    private javax.swing.JRadioButton alajuelaRButton;
     private javax.swing.JButton cambiosButton;
+    private javax.swing.JButton cambiosSuscriptoresButton;
     private javax.swing.JButton cargarButton;
+    private javax.swing.JButton cargarSuscriptoresButton;
+    private javax.swing.JRadioButton cartagoRButton;
+    private javax.swing.JTextField correoField;
+    private javax.swing.JLabel correoTxt;
     private javax.swing.JButton eliminarButton;
+    private javax.swing.JButton eliminarSuscriptorButton;
     private javax.swing.JPanel estadisticasPanel;
     private javax.swing.JSpinner fechaHoraSpinner;
     private javax.swing.JLabel fechaHoraTxt;
+    private javax.swing.JRadioButton guanacasteRButton;
+    private javax.swing.JRadioButton herediaRButton;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSpinner latitudSpinner;
     private javax.swing.JLabel latitudTxt;
+    private javax.swing.JRadioButton limonRButton;
     private javax.swing.JSpinner longitudSpinner;
     private javax.swing.JLabel longitudTxt;
     private javax.swing.JSpinner magnitudSpinner;
@@ -394,6 +554,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.ButtonGroup maritimoBGroup;
     private javax.swing.JLabel maritimoTxt;
     private javax.swing.JRadioButton noRButton;
+    private javax.swing.JTextField nombreField;
+    private javax.swing.JLabel nombreTxt;
     private javax.swing.JPanel notificarPanel;
     private javax.swing.JComboBox<String> origenCbox;
     private javax.swing.JLabel origenTxt;
@@ -401,8 +563,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel profundidadTxt;
     private javax.swing.JComboBox<String> provinciaCbox;
     private javax.swing.JLabel provinciaTxt;
+    private javax.swing.JRadioButton puntarenasRButton;
+    private javax.swing.JRadioButton sanjoseRButton;
     private javax.swing.JRadioButton siRButton;
-    private javax.swing.JTable tabla;
+    private javax.swing.JTable tablaSismos;
+    private javax.swing.JTable tablaSuscriptores;
+    private javax.swing.JTextField telefonoField;
+    private javax.swing.JLabel telefonoTxt;
     private javax.swing.JTextArea ubicacionAreaTxt;
     private javax.swing.JScrollPane ubicacionPane;
     private javax.swing.JLabel ubicacionTxt;
